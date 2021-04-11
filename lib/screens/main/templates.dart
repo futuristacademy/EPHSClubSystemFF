@@ -7,6 +7,7 @@ import 'package:flutter/rendering.dart';
 import 'package:clubsystem/screens/main/dashboard.dart';
 import 'package:clubsystem/screens/utility/global.dart';
 import 'package:clubsystem/screens/utility/notifiers.dart';
+import 'package:http/http.dart' as http;
 
 //login template
 class LoginTemplate extends StatefulWidget {
@@ -33,8 +34,26 @@ class _LoginTemplateState extends State<LoginTemplate> {
 
   _LoginTemplateState();
 
+  Future<String> login() async {
+    Map<String, String> params = {
+      'email': _email.text.trim(),
+      'password': _password.text.trim()
+    };
+    final response = await http.post(
+        Uri.https('protected-tor-81595.herokuapp.com', 'user/login'),
+        body: params,
+        headers: {
+          "Access-Control_Allow_Origin": "*",
+          "Access-Control-Allow-Methods": "POST, OPTIONS"
+        }
+    );
+    return response.toString();
+  }
+
   //try executing the actual login process
-  void executeLogin() async {
+  Future<String> executeLogin() async {
+    String response;
+    await login();
     FirebaseAuth.instance
         .signInWithEmailAndPassword(
             email: _email.text.trim(), password: _password.text.trim())
@@ -77,6 +96,7 @@ class _LoginTemplateState extends State<LoginTemplate> {
             });
       }
     });
+    return "did_stuff";
   }
 
   void tryToLogin() async {
