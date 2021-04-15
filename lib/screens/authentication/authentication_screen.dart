@@ -1,5 +1,4 @@
-// ignore: avoid_web_libraries_in_flutter
-//import 'dart:html';
+import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:clubsystem/screens/main/dashboard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -46,18 +45,6 @@ class _AuthScreenState extends State<AuthScreen> {
     setState(() {
       _isRegisterButtonClicked = true;
       _isLoginButtonClicked = false;
-    });
-  }
-
-  void loadingHome() async {
-    setState(() {
-      _isTryingToLoad = true;
-    });
-    UserCredential userCredential = await FirebaseAuth.instance.signInAnonymously();
-    await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => DashboardScreen()));
-    setState(() {
-      _isTryingToLoad = false;
     });
   }
 

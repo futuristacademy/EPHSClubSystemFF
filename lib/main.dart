@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:clubsystem/screens/authentication/authentication_screen.dart';
-import 'package:flutter_icons/flutter_icons.dart';
-import 'package:firebase_core/firebase_core.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+void main() {
   runApp(MyApp());
 }
 
@@ -15,7 +11,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false, //removes the red debug banner
-      title: 'Snowplow App',
+      title: 'EPHS Club System',
       home: AuthScreen(),
       theme: ThemeData(
         // This is the theme of your application.

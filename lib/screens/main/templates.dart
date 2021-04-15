@@ -29,60 +29,27 @@ class _LoginTemplateState extends State<LoginTemplate> {
 
   //String _tier = "";
 
-  bool _desiresAutoLogin = false;
   bool _isLogginIn = false;
 
   _LoginTemplateState();
 
-  Future<String> login() async {
-    Map<String, String> params = {
+  //try executing the actual login process
+  Future<String> executeLogin() async {
+        Map<String, String> params = {
       'email': _email.text.trim(),
       'password': _password.text.trim()
     };
+    try {
     final response = await http.post(
         Uri.https('protected-tor-81595.herokuapp.com', 'user/login'),
         body: params,
-        headers: {
-          "Access-Control_Allow_Origin": "*",
-          "Access-Control-Allow-Methods": "POST, OPTIONS"
-        }
-    );
-    return response.toString();
-  }
-
-  //try executing the actual login process
-  Future<String> executeLogin() async {
-    String response;
-    await login();
-    FirebaseAuth.instance
-        .signInWithEmailAndPassword(
-            email: _email.text.trim(), password: _password.text.trim())
-        .then((authResult) async /*sign in callback */ {
-      String userId =
-          authResult.user.uid;
-
-      //changes screen to dashboard screen
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => new DashboardScreen()));
-    }).catchError((error) {
-      print(error);
-
+        );
+        print(response.body);
+        if (response.statusCode !=200) throw HttpException('${response.statusCode}');
+        final jsonMap = jsonDecode(response.body);
+    } on SocketException {
       setState(() => _isLogginIn = false);
-      //if credentials are invalid then throw the error
-      if (error.toString().contains("INVALID") ||
-          error.toString().contains("WRONG") ||
-          error.toString().contains("NOT_FOUND")) {
-        showDialog(
-            context: context,
-            builder: (context) {
-              return SingleActionPopup(
-                  "Invalid Credentials", "Error", Colors.black);
-            });
-      }
-
-      //if network times out, throw error
-      else if (error.toString().contains("NETWORK")) {
-        showDialog(
+              showDialog(
             context: context,
             builder: (context) {
               return ErrorPopup(
@@ -94,8 +61,17 @@ class _LoginTemplateState extends State<LoginTemplate> {
                 executeLogin();
               });
             });
-      }
-    });
+    } on HttpException {
+      setState(() => _isLogginIn = false);
+        showDialog(
+            context: context,
+            builder: (context) {
+              return SingleActionPopup(
+                  "Invalid Credentials", "Error", Colors.black);
+            });
+    }
+    Navigator.push(
+          context, MaterialPageRoute(builder: (context) => new DashboardScreen()));
     return "did_stuff";
   }
 
@@ -265,65 +241,24 @@ class _RegisterTemplateState extends State<RegisterTemplate> {
 
   final _registrationFormKey = GlobalKey<FormState>();
 
-  Future<String> authenticateUser() async {
-    String newUid;
-    UserCredential authRes = await FirebaseAuth.instance
-        .createUserWithEmailAndPassword(
-            email: _email.text.trim(), password: _password.text.trim());
-    newUid = authRes.user.uid;
-
-    //cache results
-
-    //basic user information
-    Map jsonInformation = {
-      'auto': true,
-      'email': _email.text,
-      'password': _password.text,
-      //'tier': _tier,
-    } as Map;
-
-    Global.uid = newUid;
-
-    //create new document with data
-
-    Map<String, dynamic> updatedUserData = {
-      "first_name": _firstName.text.trim(),
-      "email": _email.text.trim(),
-      "last_name": _lastName.text.trim(),
-      "access": "Basic",
-      "uid": newUid,
-    };
-
-    return "Finished";
-  }
-
   //executes the actual registration
   void executeRegistration() async {
-
-    await authenticateUser()
-        .then((_) /* call back for creating a users document*/ {
+    Map<String, dynamic> newUserData = {
+      "name": _firstName.text.trim()+" "+_lastName.text.trim(),
+      "email": _email.text.trim(),
+      //"access": "Basic",
+    };
+        try {
+    final response = await http.post(
+        Uri.https('protected-tor-81595.herokuapp.com', 'user/login'), //change for registration
+        body: newUserData,
+        );
+        print(response.body);
+        if (response.statusCode !=200) throw HttpException('${response.statusCode}');
+        final jsonMap = jsonDecode(response.body);
+    } on SocketException {
       setState(() => _isTryingToRegister = false);
-
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => DashboardScreen())); //go to profile screen
-
-      //catching invalid email error
-    }).catchError((error) {
-      setState(() => _isTryingToRegister = false);
-
-      //if email already exists throw an error popup
-      if (error.toString().contains("ALREADY")) {
-        showDialog(
-            context: context,
-            builder: (context) {
-              return SingleActionPopup(
-                  "Email is already in use", "ERROR!", Colors.blue);
-            });
-      }
-
-      //catch a network timed out error
-      if (error.toString().contains("NETWORK")) {
-        showDialog(
+              showDialog(
             context: context,
             builder: (context) {
               return ErrorPopup(
@@ -335,24 +270,21 @@ class _RegisterTemplateState extends State<RegisterTemplate> {
                 executeRegistration();
               });
             });
-      }
-       else {
+    } on HttpException {
+      setState(() => _isTryingToRegister = false);
         showDialog(
             context: context,
             builder: (context) {
-              print(error);
-              return ErrorPopup(
-                  "Oof. Something went wrong during registration.", () {
-                Navigator.of(context).pop();
-                setState(() {
-                  _isTryingToRegister = true;
-                });
-                executeRegistration();
-              });
+              return SingleActionPopup(
+                  "Invalid Credentials", "Error", Colors.black);
             });
-       }
-    });
+    }
+      setState(() => _isTryingToRegister = false);
+
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => DashboardScreen()));
   }
+      //catching invalid email error
 
   //handles registration of user
   void tryToRegister() async {
