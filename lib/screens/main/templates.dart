@@ -39,39 +39,55 @@ class _LoginTemplateState extends State<LoginTemplate> {
       'email': _email.text.trim(),
       'password': _password.text.trim()
     };
-    try {
+    var logindetails;
+
+    //try {
     final response = await http.post(
         Uri.https('protected-tor-81595.herokuapp.com', 'user/login'),
         body: params,
-        );
-        print(response.body);
-        if (response.statusCode !=200) throw HttpException('${response.statusCode}');
-        final jsonMap = jsonDecode(response.body);
-    } on SocketException {
-      setState(() => _isLogginIn = false);
-              showDialog(
-            context: context,
-            builder: (context) {
-              return ErrorPopup(
-                  "Network timed out, please check your wifi connection", () {
-                Navigator.of(context).pop();
-                setState(() {
-                  _isLogginIn = true;
-                });
-                executeLogin();
-              });
-            });
-    } on HttpException {
-      setState(() => _isLogginIn = false);
-        showDialog(
-            context: context,
-            builder: (context) {
-              return SingleActionPopup(
-                  "Invalid Credentials", "Error", Colors.black);
-            });
-    }
-    Navigator.push(
+        ).then((value) { 
+          logindetails = value;
+          if (logindetails.statusCode !=200 || logindetails.body == "Login Failed") {
+            setState(() => _isLogginIn = false);
+            print("ERROR SIGNING IN");
+            print(logindetails.statusCode);
+            // showDialog(
+            // context: context,
+            // builder: (context) {
+            //   return SingleActionPopup(
+            //       "Invalid Credentials", "Error", Colors.black);
+            // });
+          } else {
+           Navigator.push(
           context, MaterialPageRoute(builder: (context) => new DashboardScreen()));
+          }
+        });
+    print(logindetails.body);
+    //final jsonMap = jsonDecode(logindetails.body);
+    //
+    // } on SocketException {
+    //   setState(() => _isLogginIn = false);
+    //           showDialog(
+    //         context: context,
+    //         builder: (context) {
+    //           return ErrorPopup(
+    //               "Network timed out, please check your wifi connection", () {
+    //             Navigator.of(context).pop();
+    //             setState(() {
+    //               _isLogginIn = true;
+    //             });
+    //             executeLogin();
+    //           });
+    //         });
+    // } on HttpException {
+    //   setState(() => _isLogginIn = false);
+    //     showDialog(
+    //         context: context,
+    //         builder: (context) {
+    //           return SingleActionPopup(
+    //               "Invalid Credentials", "Error", Colors.black);
+    //         });
+    // }
     return "did_stuff";
   }
 
@@ -246,43 +262,57 @@ class _RegisterTemplateState extends State<RegisterTemplate> {
     Map<String, dynamic> newUserData = {
       "name": _firstName.text.trim()+" "+_lastName.text.trim(),
       "email": _email.text.trim(),
+      "password": _password.text.trim(),
       //"access": "Basic",
     };
-        try {
-    final response = await http.post(
-        Uri.https('protected-tor-81595.herokuapp.com', 'user/login'), //change for registration
+    var signupdetails;
+      final response = await http.post(
+        Uri.https('protected-tor-81595.herokuapp.com', 'user'),
         body: newUserData,
-        );
-        print(response.body);
-        if (response.statusCode !=200) throw HttpException('${response.statusCode}');
-        final jsonMap = jsonDecode(response.body);
-    } on SocketException {
-      setState(() => _isTryingToRegister = false);
-              showDialog(
-            context: context,
-            builder: (context) {
-              return ErrorPopup(
-                  "Network timed out, please check your wifi connection", () {
-                Navigator.of(context).pop();
-                setState(() {
-                  _isTryingToRegister = true;
-                });
-                executeRegistration();
-              });
-            });
-    } on HttpException {
-      setState(() => _isTryingToRegister = false);
-        showDialog(
-            context: context,
-            builder: (context) {
-              return SingleActionPopup(
-                  "Invalid Credentials", "Error", Colors.black);
-            });
-    }
-      setState(() => _isTryingToRegister = false);
+        ).then((value) { 
+          signupdetails = value;
+          if (signupdetails.statusCode !=200) {
+            setState(() => _isTryingToRegister = false);
+            print("ERROR SIGNING IN"); print("ERROR SIGNING IN"); 
+            print(signupdetails.statusCode);
+            // showDialog(
+            // context: context,
+            // builder: (context) {
+            //   return SingleActionPopup(
+            //       "Invalid Credentials", "Error", Colors.black);
+            // });
+          } else {
+           Navigator.push(
+          context, MaterialPageRoute(builder: (context) => new DashboardScreen()));
+          }
+        });
+    print(signupdetails.body);
+    //     try {
+    // } on SocketException {
+    //   setState(() => _isTryingToRegister = false);
+    //           showDialog(
+    //         context: context,
+    //         builder: (context) {
+    //           return ErrorPopup(
+    //               "Network timed out, please check your wifi connection", () {
+    //             Navigator.of(context).pop();
+    //             setState(() {
+    //               _isTryingToRegister = true;
+    //             });
+    //             executeRegistration();
+    //           });
+    //         });
+    // } on HttpException {
+    //   setState(() => _isTryingToRegister = false);
+    //     showDialog(
+    //         context: context,
+    //         builder: (context) {
+    //           return SingleActionPopup(
+    //               "Invalid Credentials", "Error", Colors.black);
+    //         });
+    // }
+    //   setState(() => _isTryingToRegister = false);
 
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => DashboardScreen()));
   }
       //catching invalid email error
 

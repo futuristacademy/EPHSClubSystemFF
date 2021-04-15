@@ -21,9 +21,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         child: IconButton(
           icon: Icon(Icons.logout),
           onPressed: () {
-            final User user = FirebaseAuth.instance.currentUser;
-            print(user.uid.toString());
-            final String uid = user.uid;
+            //logout user request to database
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
