@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false, //removes the red debug banner
-      title: 'EPHS Club System',
+      title: 'Club Management System',
       home: AuthScreen(),
       theme: ThemeData(
         // This is the theme of your application.

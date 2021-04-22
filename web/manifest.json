@@ -1,11 +1,11 @@
 {
-    "name": "clubsystem",
-    "short_name": "clubsystem",
+    "name": "EPHS Club Management System",
+    "short_name": "Club System",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "A place for school clubs and their members to record, track, and display club-specific information.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
