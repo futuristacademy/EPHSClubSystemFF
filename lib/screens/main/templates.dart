@@ -59,7 +59,7 @@ class _LoginTemplateState extends State<LoginTemplate> {
             // });
           } else {
            Navigator.push(
-          context, MaterialPageRoute(builder: (context) => new DashboardScreen()));
+          context, MaterialPageRoute(builder: (context) => DashboardScreen()));
           }
         });
     print(logindetails.body);

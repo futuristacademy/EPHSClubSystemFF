@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false, //removes the red debug banner
       title: 'Club Management System',
-      home: DashboardScreen(),
+      home: AuthScreen(),
       theme: ThemeData(
         // This is the theme of your application.
         //

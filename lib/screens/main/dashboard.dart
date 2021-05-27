@@ -94,7 +94,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: Text("Username's Dashboard"),
+          title: Text("User Dashboard"),
           actions: <Widget>[
             PopupMenuButton(
                 color: Colors.white,
