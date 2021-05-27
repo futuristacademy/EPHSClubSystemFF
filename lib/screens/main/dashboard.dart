@@ -12,15 +12,37 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-
   @override
   Widget build(BuildContext context) {
 
-         final logoutButton = Container(
-        alignment: Alignment.center,
-        child: IconButton(
-          icon: Icon(Icons.logout),
-          onPressed: () {
+    TextStyle style = TextStyle(
+      fontFamily: 'Montserrat', fontSize: 20.0, color: Colors.black54);
+
+        final myImageAndCaption = [
+      ["FA.jpg", "Futurist Academy"],
+      ["quizbowl.png", "Quizbowl"],
+      ["DECA.jpg", "DECA"],
+      //["NHS.jpg", "NHS"],
+    ];
+        final settingsButton = Material(
+      color: Colors.white,
+      child: MaterialButton(
+        onPressed: () {
+          Navigator.pop(context);
+          //settings popup
+        },
+        child: Text(
+          "Settings",
+          textAlign: TextAlign.center,
+          style: style,
+        ),
+      ),
+    );
+
+            final logoutButton = Material(
+      color: Colors.white,
+      child: MaterialButton(
+        onPressed: () {
             //logout user request to database
             Navigator.pushAndRemoveUntil(
               context,
@@ -30,23 +52,111 @@ class _DashboardScreenState extends State<DashboardScreen> {
               (route) => false,
             );
           },
-        ));
+        child: Text(
+          "Log Out",
+          textAlign: TextAlign.center,
+          style: style,
+        ),
+      ),
+    );
+
+        final joinClubButton = Material(
+      color: Colors.white,
+      child: MaterialButton(
+        onPressed: () {
+          Navigator.pop(context);
+          //to join a club
+        },
+        child: Text(
+          "Join Club",
+          textAlign: TextAlign.center,
+          style: style,
+        ),
+      ),
+    );
+
+            final createClubButton = Material(
+      color: Colors.white,
+      child: MaterialButton(
+        onPressed: () {
+          Navigator.pop(context);
+          //create a club
+        },
+        child: Text(
+          "Create Club",
+          textAlign: TextAlign.center,
+          style: style,
+        ),
+      ),
+    );
+
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: Text("Username's Dashboard"),
-        actions: <Widget>[
-          PopupMenuButton(
-              color: Colors.blueGrey,
-              itemBuilder: (context) => [
-                    PopupMenuItem(
-                      child: logoutButton,
-                    ),
-                  ],
-              offset: Offset(0, 0)),
-        ],
-      ),
-      );
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          title: Text("Username's Dashboard"),
+          actions: <Widget>[
+            PopupMenuButton(
+                color: Colors.white,
+                itemBuilder: (context) => [
+                      PopupMenuItem(
+                        child: logoutButton,
+                      ),
+                      PopupMenuItem(
+                        child: settingsButton,
+                      ),
+                      PopupMenuItem(
+                        child: joinClubButton,
+                      ),
+                      PopupMenuItem(
+                        child: createClubButton,
+                      ),
+                    ],
+                offset: Offset(0, 0)),
+          ],
+        ),
+        body: Padding(
+          padding: EdgeInsets.only(top: 10.0),
+          child: GridView.count(
+          crossAxisCount: 3,
+          children: [
+            ...myImageAndCaption.map(
+              (i) => Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Material(
+                    elevation: 3.0,
+                    child: Image.asset(
+                    i.first,
+                    fit: BoxFit.cover,
+                    height: 100,
+                    width: 100,
+                 ),
+                    
+                  ),
+              Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.all(5),
+                child: ListTile(
+                  leading: Icon(Icons.person, color: Colors.blue),
+                  title: Text(i.last,
+                      textAlign: TextAlign.left,
+                      style: new TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20)),
+                  subtitle: Text(
+                    '2021-2022',
+                    style:
+                        TextStyle(fontSize: 16),
+                  ),
+                  onTap: () => {},
+                ),
+              ),                
+                ],
+              ),
+            ),
+          ],
+          ),
+            ));
   }
 }
