@@ -1,3 +1,4 @@
+import 'package:clubsystem/screens/main/clubpage.dart';
 import 'package:flutter/material.dart';
 import 'package:clubsystem/screens/authentication/authentication_screen.dart';
 import 'package:clubsystem/screens/main/dashboard.dart';
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false, //removes the red debug banner
       title: 'Club Management System',
-      home: AuthScreen(),
+      home: DashboardScreen(),
       theme: ThemeData(
         // This is the theme of your application.
         //

@@ -1,8 +1,10 @@
+import 'package:clubsystem/screens/main/clubpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth_web/firebase_auth_web.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:clubsystem/screens/authentication/authentication_screen.dart';
+import 'package:clubsystem/screens/main/clubpage.dart';
 
 class DashboardScreen extends StatefulWidget {
   DashboardScreen({Key key}) : super(key: key);
@@ -14,17 +16,16 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
-
     TextStyle style = TextStyle(
-      fontFamily: 'Montserrat', fontSize: 20.0, color: Colors.black54);
+        fontFamily: 'Montserrat', fontSize: 20.0, color: Colors.black54);
 
-        final myImageAndCaption = [
+    final myImageAndCaption = [
       ["FA.jpg", "Futurist Academy"],
-      ["quizbowl.png", "Quizbowl"],
+      ["quizbowl.png", "Quizbowl Club"],
       ["DECA.jpg", "DECA"],
       //["NHS.jpg", "NHS"],
     ];
-        final settingsButton = Material(
+    final settingsButton = Material(
       color: Colors.white,
       child: MaterialButton(
         onPressed: () {
@@ -39,19 +40,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
     );
 
-            final logoutButton = Material(
+    final logoutButton = Material(
       color: Colors.white,
       child: MaterialButton(
         onPressed: () {
-            //logout user request to database
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder: (BuildContext context) => new AuthScreen(),
-              ),
-              (route) => false,
-            );
-          },
+          //logout user request to database
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) => new AuthScreen(),
+            ),
+            (route) => false,
+          );
+        },
         child: Text(
           "Log Out",
           textAlign: TextAlign.center,
@@ -60,7 +61,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
     );
 
-        final joinClubButton = Material(
+    final joinClubButton = Material(
       color: Colors.white,
       child: MaterialButton(
         onPressed: () {
@@ -75,7 +76,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
     );
 
-            final createClubButton = Material(
+    final createClubButton = Material(
       color: Colors.white,
       child: MaterialButton(
         onPressed: () {
@@ -89,7 +90,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
       ),
     );
-
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -118,45 +118,47 @@ class _DashboardScreenState extends State<DashboardScreen> {
         body: Padding(
           padding: EdgeInsets.only(top: 10.0),
           child: GridView.count(
-          crossAxisCount: 3,
-          children: [
-            ...myImageAndCaption.map(
-              (i) => Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Material(
-                    elevation: 3.0,
-                    child: Image.asset(
-                    i.first,
-                    fit: BoxFit.cover,
-                    height: 100,
-                    width: 100,
-                 ),
-                    
-                  ),
-              Container(
-                alignment: Alignment.center,
-                padding: EdgeInsets.all(5),
-                child: ListTile(
-                  leading: Icon(Icons.person, color: Colors.blue),
-                  title: Text(i.last,
-                      textAlign: TextAlign.left,
-                      style: new TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20)),
-                  subtitle: Text(
-                    '2021-2022',
-                    style:
-                        TextStyle(fontSize: 16),
-                  ),
-                  onTap: () => {},
+            crossAxisCount: 3,
+            children: [
+              ...myImageAndCaption.map(
+                (i) => Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Material(
+                      elevation: 3.0,
+                      child: Image.asset(
+                        i.first,
+                        fit: BoxFit.cover,
+                        height: 100,
+                        width: 100,
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.all(5),
+                      child: ListTile(
+                        leading: Icon(Icons.person, color: Colors.blue),
+                        title: Text(i.last,
+                            textAlign: TextAlign.left,
+                            style: new TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20)),
+                        subtitle: Text(
+                          '2021-2022',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        onTap: () => {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => new ClubPage()))
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-              ),                
-                ],
               ),
-            ),
-          ],
+            ],
           ),
-            ));
+        ));
   }
 }
