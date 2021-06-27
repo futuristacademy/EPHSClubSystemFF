@@ -1,10 +1,9 @@
-import 'package:clubsystem/screens/main/clubpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth_web/firebase_auth_web.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:clubsystem/screens/authentication/authentication_screen.dart';
-import 'package:clubsystem/screens/main/clubpage.dart';
+import 'package:clubsystem/screens/main/mainselect.dart';
 
 class DashboardScreen extends StatefulWidget {
   DashboardScreen({Key key}) : super(key: key);
@@ -150,7 +149,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => new ClubPage()))
+                                  builder: (context) => new MainSelect()))
                         },
                       ),
                     ),
